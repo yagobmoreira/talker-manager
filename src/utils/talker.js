@@ -34,8 +34,25 @@ const findTalkerById = async (id) => {
   return talker;
 };
 
+const editTalker = async (talker, id) => {
+  try {
+    const talkers = await readTalkerFile();
+    const index = talkers.findIndex((person) => person.id === id);
+    console.log(index);
+    if (index === -1) {
+      return null;
+    }
+    talkers[index] = { id, ...talker };
+    await fs.writeFile(filePath, JSON.stringify(talkers));
+    return true;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   getAllTalkers,
   findTalkerById,
   writeTalkerFile,
+  editTalker,
 };
