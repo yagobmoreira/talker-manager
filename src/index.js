@@ -1,8 +1,14 @@
 const express = require('express');
-const { getAllTalkers, findTalkerById } = require('./utils/talker');
+const { getAllTalkers, findTalkerById, writeTalkerFile } = require('./utils/talker');
 const generateToken = require('./utils/generateToken');
 const validateEmail = require('./middlewares/validateEmail');
 const validatePassword = require('./middlewares/validatePassword');
+const validateCredentials = require('./middlewares/validateCredentials');
+const validateName = require('./middlewares/validateName');
+const validateAge = require('./middlewares/validateAge');
+const validateTalk = require('./middlewares/validateTalk');
+const validateWatchedAt = require('./middlewares/validateWatchedAt');
+const validateRate = require('./middlewares/validateRate');
 
 const app = express();
 app.use(express.json());
@@ -14,6 +20,27 @@ const PORT = process.env.PORT || '3001';
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
+
+app.post('/talker',
+  validateCredentials,
+  validateName,
+  validateAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate,
+  async (req, res) => {
+    const { name, age, talk } = req.body;
+    const talkers = await getAllTalkers();
+    const nextId = talkers.length + 1;
+    const newTalker = {
+      id: nextId,
+      name,
+      age,
+      talk,
+    };
+    await writeTalkerFile(newTalker);
+    return res.status(201).json(newTalker);
+  });
 
 app.get('/talker', async (_req, res) => {
   const talkers = await getAllTalkers();
