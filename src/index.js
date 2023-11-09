@@ -3,7 +3,9 @@ const {
   getAllTalkers,
   findTalkerById,
   writeTalkerFile,
-  editTalker, deleteTalker,
+  editTalker, 
+  deleteTalker,
+  searchTalker,
 } = require('./utils/talker');
 const generateToken = require('./utils/generateToken');
 const validateEmail = require('./middlewares/validateEmail');
@@ -74,6 +76,20 @@ app.get('/talker', async (_req, res) => {
   }
   return res.status(200).json(talkers);
 });
+
+app.get('/talker/search',
+  validateCredentials,
+  async (req, res) => {
+    const talkers = await getAllTalkers();
+    const { q } = req.query;
+    const search = await searchTalker(q);
+    if (!q) {
+      return res.status(200).json(talkers);
+    }
+    if (search) {
+      return res.status(200).json(search);
+    }
+  });
 
 app.get('/talker/:id', async (req, res) => {
   const { id } = req.params;
