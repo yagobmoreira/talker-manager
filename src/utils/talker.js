@@ -50,9 +50,20 @@ const editTalker = async (talker, id) => {
   }
 };
 
+const deleteTalker = async (id) => {
+  try {
+    const talkers = await readTalkerFile();
+    const talkersWithoutDeleted = talkers.filter((person) => person.id !== id);
+    await fs.writeFile(filePath, JSON.stringify(talkersWithoutDeleted));
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   getAllTalkers,
   findTalkerById,
   writeTalkerFile,
   editTalker,
+  deleteTalker,
 };

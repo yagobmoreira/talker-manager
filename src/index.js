@@ -1,5 +1,10 @@
 const express = require('express');
-const { getAllTalkers, findTalkerById, writeTalkerFile, editTalker } = require('./utils/talker');
+const { 
+  getAllTalkers,
+  findTalkerById,
+  writeTalkerFile,
+  editTalker, deleteTalker,
+} = require('./utils/talker');
 const generateToken = require('./utils/generateToken');
 const validateEmail = require('./middlewares/validateEmail');
 const validatePassword = require('./middlewares/validatePassword');
@@ -87,6 +92,14 @@ app.post('/login', validateEmail, validatePassword, async (req, res) => {
     token,
   });
 });
+
+app.delete('/talker/:id',
+  validateCredentials,
+  async (req, res) => {
+    const id = Number(req.params.id);
+    await deleteTalker(id);
+    return res.status(204).end();
+  });
 
 app.listen(PORT, () => {
   console.log('Online');
