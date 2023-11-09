@@ -63,7 +63,7 @@ const deleteTalker = async (id) => {
 const searchTalker = async (q) => {
   try {
     const talkers = await readTalkerFile();
-    const search = talkers.filter((person) => person.name.includes(q));
+    const search = talkers.filter((person) => person.name.toLowerCase().includes(q.toLowerCase()));
     return search;
   } catch (error) {
     console.error(error);
