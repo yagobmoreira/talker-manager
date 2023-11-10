@@ -37,6 +37,7 @@ const findTalkerById = async (id) => {
 const editTalker = async (talker, id) => {
   try {
     const talkers = await readTalkerFile();
+    console.log(talkers);
     const index = talkers.findIndex((person) => person.id === id);
     console.log(index);
     if (index === -1) {

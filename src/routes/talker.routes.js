@@ -7,6 +7,7 @@ const {
   editTalker,
   writeTalkerFile,
 } = require('../utils/talker');
+
 const validateName = require('../middlewares/validateName');
 const validateCredentials = require('../middlewares/validateCredentials');
 const validateAge = require('../middlewares/validateAge');
@@ -15,6 +16,7 @@ const validateWatchedAt = require('../middlewares/validateWatchedAt');
 const validateRate = require('../middlewares/validateRate');
 const validateRateQuery = require('../middlewares/validateRateQuery');
 const validateDateQuery = require('../middlewares/validateDateQuery');
+const validateRatePatch = require('../middlewares/validateRatePatch');
 
 const talkerRouter = Router();
 
@@ -34,6 +36,18 @@ talkerRouter.get('/search',
     const { q, rate, date } = req.query;
     const talkers = await searchTalker(q, rate, date);
     res.status(200).json(talkers);
+  });
+
+talkerRouter.patch('/rate/:id',
+  validateCredentials,
+  validateRatePatch,
+  async (req, res) => {
+    const id = Number(req.params.id);
+    const { rate } = req.body;
+    const talker = await findTalkerById(Number(id));
+    const newTalker = { ...talker, talk: { ...talker.talk, rate } };
+    await editTalker(newTalker, id);
+    return res.status(204).end();
   });
 
 talkerRouter.get('/:id', async (req, res) => {
