@@ -1,4 +1,4 @@
-const validateParams = (req, res, next) => {
+const validateRateQuery = (req, res, next) => {
   const { rate } = req.query;
   const rateNumber = Number(rate);
   if (rate && (!Number.isInteger(rateNumber) || rateNumber < 1 || rateNumber > 5)) {
@@ -9,4 +9,4 @@ const validateParams = (req, res, next) => {
   next();
 };
 
-module.exports = validateParams;
+module.exports = validateRateQuery;

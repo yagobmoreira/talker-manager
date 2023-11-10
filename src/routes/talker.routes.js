@@ -13,7 +13,8 @@ const validateAge = require('../middlewares/validateAge');
 const validateTalk = require('../middlewares/validateTalk');
 const validateWatchedAt = require('../middlewares/validateWatchedAt');
 const validateRate = require('../middlewares/validateRate');
-const validateParams = require('../middlewares/validateParams');
+const validateRateQuery = require('../middlewares/validateRateQuery');
+const validateDateQuery = require('../middlewares/validateDateQuery');
 
 const talkerRouter = Router();
 
@@ -27,10 +28,11 @@ talkerRouter.get('/', async (_req, res) => {
 
 talkerRouter.get('/search',
   validateCredentials,
-  validateParams,
+  validateRateQuery,
+  validateDateQuery,
   async (req, res) => {
-    const { q, rate } = req.query;
-    const talkers = await searchTalker(q, rate);
+    const { q, rate, date } = req.query;
+    const talkers = await searchTalker(q, rate, date);
     res.status(200).json(talkers);
   });
 

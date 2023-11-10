@@ -60,16 +60,12 @@ const deleteTalker = async (id) => {
   }
 };
 
-const searchTalker = async (q, rate) => {
-  try {
-    const talkers = await readTalkerFile();
-    const filteredTalkers = talkers
-      .filter(({ name }) => (q ? name.includes(q) : true))
-      .filter(({ talk }) => (rate ? talk.rate === Number(rate) : true));
-    return filteredTalkers;
-  } catch (error) {
-    console.error(error);
-  }
+const searchTalker = async (q, rate, date) => {
+  const talkers = await readTalkerFile();
+  return talkers
+    .filter(({ name }) => (q ? name.includes(q) : true))
+    .filter(({ talk }) => (rate ? talk.rate === Number(rate) : true))
+    .filter(({ talk }) => (date ? talk.watchedAt === date : true));
 };
 
 module.exports = {
