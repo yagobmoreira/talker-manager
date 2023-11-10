@@ -8,6 +8,8 @@ const {
   writeTalkerFile,
 } = require('../utils/talker');
 
+const { getAllTalkersDB } = require('../db/talkerDB');
+
 const validateName = require('../middlewares/validateName');
 const validateCredentials = require('../middlewares/validateCredentials');
 const validateAge = require('../middlewares/validateAge');
@@ -22,6 +24,14 @@ const talkerRouter = Router();
 
 talkerRouter.get('/', async (_req, res) => {
   const talkers = await getAllTalkers();
+  if (!talkers.length) {
+    return res.status(200).json([]);
+  }
+  return res.status(200).json(talkers);
+});
+
+talkerRouter.get('/db', async (_req, res) => {
+  const talkers = await getAllTalkersDB();
   if (!talkers.length) {
     return res.status(200).json([]);
   }
