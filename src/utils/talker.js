@@ -60,11 +60,13 @@ const deleteTalker = async (id) => {
   }
 };
 
-const searchTalker = async (q) => {
+const searchTalker = async (q, rate) => {
   try {
     const talkers = await readTalkerFile();
-    const search = talkers.filter((person) => person.name.toLowerCase().includes(q.toLowerCase()));
-    return search;
+    const filteredTalkers = talkers
+      .filter(({ name }) => (q ? name.includes(q) : true))
+      .filter(({ talk }) => (rate ? talk.rate === Number(rate) : true));
+    return filteredTalkers;
   } catch (error) {
     console.error(error);
   }
