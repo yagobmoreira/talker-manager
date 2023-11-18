@@ -1,5 +1,7 @@
 # Talker Manager Project 🗣️
 
+![app](public/app.png)
+
 ## Descrição do Projeto
 
 Este repositório contém um projeto focado na construção de uma aplicação de palestrantes (talkers) utilizando Node.js com Express para a criação de uma API REST. O objetivo é a manipulação de dados através das operações CRUD (Create, Read, Update e Delete). A manipulação de dados é realizada com um JSON, mas a última realiza uma consulta em um banco de dados MySQL.
